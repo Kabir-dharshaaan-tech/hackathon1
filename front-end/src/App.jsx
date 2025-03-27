@@ -2,11 +2,12 @@
 
 
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Home from "./pages/Home";
 import UserHome from "./userpage/userHome";
+import UserForm from "./userpage/userForm";
 
 const App = () => {
   // State to track authentication
@@ -15,9 +16,7 @@ const App = () => {
   // Check if user is already logged in (token exists in localStorage)
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-      setIsAuthenticated(true);
-    }
+    setIsAuthenticated(!!token); // Convert token existence to boolean
   }, []);
 
   // Function to handle login success
@@ -30,6 +29,7 @@ const App = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsAuthenticated(false);
+    window.location.href = "/login"; // Ensures redirection after logout
   };
 
   return (
@@ -40,10 +40,14 @@ const App = () => {
         <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* Protected Route: Redirect to login if not authenticated */}
+        {/* Protected Routes */}
         <Route
           path="/userHome"
-          element={isAuthenticated ? <UserHome onLogout={handleLogout} /> : <Navigate to="/login" />}
+          element={isAuthenticated ? <UserHome onLogout={handleLogout} /> : <Navigate to="/login" replace />}
+        />
+        <Route
+          path="/userForm"
+          element={isAuthenticated ? <UserForm /> : <Navigate to="/login" replace />}
         />
       </Routes>
     </Router>

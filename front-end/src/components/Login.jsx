@@ -1,5 +1,7 @@
 
 
+
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -21,17 +23,17 @@ const Login = () => {
       console.log("Login successful", response.data);
       // Store token in local storage
       localStorage.setItem("token", response.data.token);
-      // Navigate to UserHome after successful login
-      navigate("/userHome");
+      // Navigate to UserForm after successful login
+      navigate("/userForm");
     } catch (err) {
       setError("Invalid email or password");
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-black to-blue-900">
-      <div className="bg-black p-8 rounded-lg shadow-lg w-96">
-        <h2 className="text-white text-2xl font-semibold text-center mb-4">Login</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-black to-blue-900 text-white">
+      <div className="p-8 rounded-xl shadow-lg w-full max-w-md border border-blue-500" style={{ backgroundColor: "#0a0f1e" }}>
+        <h2 className="text-2xl font-bold mb-6 text-center text-blue-400">Login</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -42,7 +44,7 @@ const Login = () => {
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 bg-gray-900 border border-blue-500 rounded-md text-white focus:ring focus:ring-blue-500"
               required
             />
           </div>
@@ -54,13 +56,13 @@ const Login = () => {
               name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 bg-gray-900 border border-blue-500 rounded-md text-white focus:ring focus:ring-blue-500"
               required
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition"
+            className="w-full p-2 mt-4 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-bold transition"
           >
             Login
           </button>

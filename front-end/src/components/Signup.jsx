@@ -2,14 +2,16 @@
 
 
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Signup = ({ setIsSignup }) => {
+const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const navigate = useNavigate(); // Hook for navigation
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,16 +24,16 @@ const Signup = ({ setIsSignup }) => {
         password,
       });
       setSuccess("User registered successfully!");
-      setTimeout(() => setIsSignup(false), 2000);
+      setTimeout(() => navigate("/login"), 2000); // Redirect to login after success
     } catch (err) {
       setError("Error registering user. Try again.");
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-black to-blue-900">
-      <div className="bg-black p-8 rounded-lg shadow-lg w-96">
-        <h2 className="text-white text-2xl font-semibold text-center mb-4">Sign Up</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-black to-blue-900 text-white">
+      <div className="p-8 rounded-xl shadow-lg w-full max-w-md border border-blue-500" style={{ backgroundColor: "#0a0f1e" }}>
+        <h2 className="text-2xl font-bold mb-6 text-center text-blue-400">Sign Up</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         {success && <p className="text-green-500 text-center mb-4">{success}</p>}
         <form onSubmit={handleSubmit}>
@@ -43,7 +45,7 @@ const Signup = ({ setIsSignup }) => {
               name="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 bg-gray-900 border border-blue-500 rounded-md text-white focus:ring focus:ring-blue-500"
               required
             />
           </div>
@@ -55,7 +57,7 @@ const Signup = ({ setIsSignup }) => {
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 bg-gray-900 border border-blue-500 rounded-md text-white focus:ring focus:ring-blue-500"
               required
             />
           </div>
@@ -67,20 +69,20 @@ const Signup = ({ setIsSignup }) => {
               name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 bg-gray-900 border border-blue-500 rounded-md text-white focus:ring focus:ring-blue-500"
               required
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition"
+            className="w-full p-2 mt-4 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-bold transition"
           >
             Sign Up
           </button>
         </form>
         <p className="text-gray-400 text-center mt-4">
           Already have an account? 
-          <button onClick={() => setIsSignup(false)} className="text-blue-400 hover:underline"> Login</button>
+          <button onClick={() => navigate("/login")} className="text-blue-400 hover:underline"> Login</button>
         </p>
       </div>
     </div>
