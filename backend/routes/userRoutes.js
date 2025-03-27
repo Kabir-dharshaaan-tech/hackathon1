@@ -1,11 +1,13 @@
+
+
+
+
 const express = require("express");
 const UserForm = require("../models/UserForm");
 
 const router = express.Router();
 
-// @route   POST /api/users
-// @desc    Store user form data
-// @access  Public
+// ✅ Create a new user entry
 router.post("/", async (req, res) => {
   const { name, phone, description, github, linkedin, education } = req.body;
 
@@ -19,9 +21,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// @route   GET /api/users
-// @desc    Get all user form submissions
-// @access  Public
+// ✅ Get all users
 router.get("/", async (req, res) => {
   try {
     const users = await UserForm.find();
@@ -29,6 +29,22 @@ router.get("/", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error, could not fetch data" });
+  }
+});
+
+// ✅ Get a single user by ID (Fix for `404 Not Found`)
+router.get("/me", async (req, res) => {
+  try {
+    const user = await UserForm.findOne(); // Fetch the first available user (for demo purposes)
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 

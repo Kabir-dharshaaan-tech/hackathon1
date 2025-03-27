@@ -2,7 +2,8 @@
 
 
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import axios from "axios";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Home from "./pages/Home";
@@ -10,27 +11,55 @@ import UserHome from "./userpage/userHome";
 import UserForm from "./userpage/userForm";
 
 const App = () => {
-  // State to track authentication
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userExists, setUserExists] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Check if user is already logged in (token exists in localStorage)
+  // Check authentication status
   useEffect(() => {
     const token = localStorage.getItem("token");
-    setIsAuthenticated(!!token); // Convert token existence to boolean
+    if (token) {
+      setIsAuthenticated(true);
+      checkUserData(token);
+    } else {
+      setLoading(false);
+    }
   }, []);
+
+  // Function to check if user data exists
+  const checkUserData = async (token) => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/users/me", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.data) {
+        setUserExists(true);
+      }
+    } catch (err) {
+      console.log("User data not found, redirecting to UserForm.");
+    }
+    setLoading(false);
+  };
 
   // Function to handle login success
   const handleLoginSuccess = (token) => {
     localStorage.setItem("token", token);
     setIsAuthenticated(true);
+    checkUserData(token);
   };
 
   // Function to handle logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsAuthenticated(false);
-    window.location.href = "/login"; // Ensures redirection after logout
+    setUserExists(false);
+    window.location.href = "/login"; // Redirect after logout
   };
+
+  if (loading) {
+    return <div className="text-white text-center mt-20">Loading...</div>; // Show loading state
+  }
 
   return (
     <Router>
@@ -49,9 +78,26 @@ const App = () => {
           path="/userForm"
           element={isAuthenticated ? <UserForm /> : <Navigate to="/login" replace />}
         />
+
+        {/* Redirect Logic */}
+        <Route
+          path="/dashboard"
+          element={
+            isAuthenticated ? (
+              userExists ? (
+                <Navigate to="/userHome" replace />
+              ) : (
+                <Navigate to="/userForm" replace />
+              )
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
       </Routes>
     </Router>
   );
 };
 
 export default App;
+
