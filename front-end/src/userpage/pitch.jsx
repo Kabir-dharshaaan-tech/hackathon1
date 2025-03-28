@@ -61,7 +61,7 @@ const Pitch = () => {
         attachment: null,
       });
       
-      setTimeout(() => navigate("/"), 2000); // Redirect to home after 2 seconds
+      setTimeout(() => navigate("/"), 2000); 
     } catch (error) {
       setMessage("Error submitting idea. Please try again.");
     } finally {
