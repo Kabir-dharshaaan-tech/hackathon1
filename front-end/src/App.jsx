@@ -1,6 +1,7 @@
 
 
 
+
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import axios from "axios";
@@ -9,6 +10,7 @@ import Signup from "./components/Signup";
 import Home from "./pages/Home";
 import UserHome from "./userpage/userHome";
 import UserForm from "./userpage/userForm";
+import Pitch from "./userpage/pitch"; // Import Pitch component
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -78,6 +80,9 @@ const App = () => {
           path="/userForm"
           element={isAuthenticated ? <UserForm /> : <Navigate to="/login" replace />}
         />
+        
+        {/* Pitch Route */}
+        <Route path="/pitch" element={<Pitch />} /> 
 
         {/* Redirect Logic */}
         <Route
@@ -100,7 +105,5 @@ const App = () => {
 };
 
 export default App;
-
-
 
 
