@@ -10,7 +10,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const UserForm = () => {
-  const navigate = useNavigate(); // React Router navigation
+  const navigate = useNavigate(); 
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -22,10 +22,10 @@ const UserForm = () => {
 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [userExists, setUserExists] = useState(false); // ✅ Track if user already filled form
+  const [userExists, setUserExists] = useState(false); 
 
   useEffect(() => {
-    // ✅ Check if user data already exists
+    
     const fetchUserData = async () => {
       try {
         const response = await axios.get("http://localhost:5000/api/users/me");
@@ -71,7 +71,7 @@ const UserForm = () => {
           </p>
         )}
 
-        {/* ✅ If user already exists, show "Go to Homepage" button */}
+       
         {userExists ? (
           <button
             className="w-full p-2 mt-4 bg-green-600 hover:bg-green-700 rounded-md text-white font-bold transition"

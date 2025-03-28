@@ -26,7 +26,7 @@ exports.createPitch = async (req, res) => {
   }
 };
 
-// Fetch all pitches
+
 exports.getPitches = async (req, res) => {
   try {
     const pitches = await Pitch.find();

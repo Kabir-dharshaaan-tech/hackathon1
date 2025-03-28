@@ -7,7 +7,7 @@ const UserForm = require("../models/UserForm");
 
 const router = express.Router();
 
-// ✅ Create a new user entry
+
 router.post("/", async (req, res) => {
   const { name, phone, description, github, linkedin, education } = req.body;
 
@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// ✅ Get all users
+
 router.get("/", async (req, res) => {
   try {
     const users = await UserForm.find();
@@ -32,10 +32,10 @@ router.get("/", async (req, res) => {
   }
 });
 
-// ✅ Get a single user by ID (Fix for `404 Not Found`)
+
 router.get("/me", async (req, res) => {
   try {
-    const user = await UserForm.findOne(); // Fetch the first available user (for demo purposes)
+    const user = await UserForm.findOne(); 
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });

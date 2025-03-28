@@ -1,6 +1,6 @@
 const UserInfo = require("../models/UserInfo");
 
-// Create new user information
+
 const createUserInfo = async (req, res) => {
   try {
     const { name, phone, description, github, linkedin, education } = req.body;
@@ -14,7 +14,7 @@ const createUserInfo = async (req, res) => {
   }
 };
 
-// Get all users
+
 const getUserInfo = async (req, res) => {
   try {
     const users = await UserInfo.find();

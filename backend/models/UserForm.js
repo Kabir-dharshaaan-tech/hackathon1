@@ -11,8 +11,8 @@ const UserFormSchema = new mongoose.Schema({
   linkedin: { type: String },
   education: { 
     type: String,
-    enum: ["High School", "Undergraduate", "Postgraduate", ""], // Allow empty value
-    default: "Undergraduate" // Provide a default value if necessary
+    enum: ["High School", "Undergraduate", "Postgraduate", ""], 
+    default: "Undergraduate" 
   }
 });
 
