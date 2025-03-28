@@ -10,7 +10,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // For navigation
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,9 +21,9 @@ const Login = () => {
         password,
       });
       console.log("Login successful", response.data);
-      // Store token in local storage
+     
       localStorage.setItem("token", response.data.token);
-      // Navigate to UserForm after successful login
+      
       navigate("/userForm");
     } catch (err) {
       setError("Invalid email or password");

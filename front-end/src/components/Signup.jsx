@@ -11,7 +11,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +24,7 @@ const Signup = () => {
         password,
       });
       setSuccess("User registered successfully!");
-      setTimeout(() => navigate("/login"), 2000); // Redirect to login after success
+      setTimeout(() => navigate("/login"), 2000); 
     } catch (err) {
       setError("Error registering user. Try again.");
     }

@@ -1,6 +1,8 @@
 
 
 
+
+// server.js (Updated)
 const express = require("express");
 const connectDB = require("./config/db");
 const cors = require("cors");
@@ -18,7 +20,8 @@ connectDB();
 
 // Define Routes
 app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/users", require("./routes/userRoutes")); // Added route for UserForm data
+app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/pitches", require("./routes/pitchRoutes")); // Added route for Pitches
 
 // Default route
 app.get("/", (req, res) => {
