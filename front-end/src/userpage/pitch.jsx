@@ -1,9 +1,11 @@
 
 
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Pitch = () => {
+  const navigate = useNavigate();
   const [idea, setIdea] = useState({
     title: "",
     category: "",
@@ -43,7 +45,7 @@ const Pitch = () => {
     }
 
     try {
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:5000/api/pitches/submit", 
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
@@ -58,6 +60,8 @@ const Pitch = () => {
         impact: "",
         attachment: null,
       });
+      
+      setTimeout(() => navigate("/"), 2000); // Redirect to home after 2 seconds
     } catch (error) {
       setMessage("Error submitting idea. Please try again.");
     } finally {
