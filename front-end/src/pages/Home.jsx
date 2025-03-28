@@ -2,6 +2,7 @@
 
 
 
+
 import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +25,7 @@ const Home = () => {
     };
     fetchPitches();
   }, []);
+
 
   
   const topics = [
@@ -164,13 +166,16 @@ const Home = () => {
             },
           ];
 
+
   const filteredTopics = topics.filter(
-    (topic) => topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      topic.subtopics.some(sub => sub.toLowerCase().includes(searchQuery.toLowerCase()))
+    (topic) =>
+      topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      topic.subtopics.some((sub) => sub.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const filteredPitches = pitches.filter(
-    (pitch) => pitch.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (pitch) =>
+      pitch.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       pitch.problem.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -178,6 +183,7 @@ const Home = () => {
     <div className="min-h-screen w-full bg-gradient-to-r from-black to-blue-900 text-white flex flex-col items-center p-10">
       <header className="w-full bg-gray-900 p-4 shadow-lg flex items-center justify-between">
         <div className="flex items-center">
+          <img src="/idRmJUL4Jv.png" alt="PitchIt Logo" className="h-12 w-auto mr-2" />
           <span className="text-3xl font-bold text-blue-400">PitchIt</span>
         </div>
         <div className="flex items-center max-w-md w-full">
@@ -205,7 +211,9 @@ const Home = () => {
             <div key={index} className="text-center">
               <button
                 className="bg-black hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition"
-                onClick={() => setSelectedTopic(selectedTopic === topic.title ? null : topic.title)}
+                onClick={() =>
+                  setSelectedTopic(selectedTopic === topic.title ? null : topic.title)
+                }
               >
                 {topic.title}
               </button>
