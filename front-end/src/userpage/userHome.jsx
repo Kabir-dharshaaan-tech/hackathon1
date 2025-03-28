@@ -1,10 +1,8 @@
 
 
-
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaLinkedin, FaGithub, FaLightbulb } from "react-icons/fa";
+import { FaLinkedin, FaGithub, FaLightbulb, FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom"; 
 
 const UserHome = () => {
@@ -29,6 +27,12 @@ const UserHome = () => {
     fetchUserData();
   }, []);
 
+  const logout = () => {
+    
+    localStorage.removeItem("token"); 
+    navigate("/"); 
+  };
+
   if (loading) {
     return <div className="text-white text-center mt-10 text-lg animate-pulse">Loading...</div>;
   }
@@ -50,11 +54,9 @@ const UserHome = () => {
         <p className="text-gray-400 text-lg">📞 {user.phone}</p>
       </div>
 
-      
       <div className="w-2/3 pl-10">
         <p className="text-gray-300 text-lg italic">"{user.description}"</p>
 
-        
         <div className="mt-6 flex space-x-6">
           <a
             href={user.github}
@@ -74,11 +76,9 @@ const UserHome = () => {
           </a>
         </div>
 
-       
         <p className="mt-6 text-xl font-semibold bg-gray-800 inline-block px-4 py-2 rounded-md">🎓 {user.education}</p>
       </div>
 
-   
       <button
         className="absolute bottom-6 right-6 bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-full shadow-lg flex items-center space-x-2 transition"
         onClick={() => navigate("/pitch")} 
@@ -86,11 +86,19 @@ const UserHome = () => {
         <FaLightbulb className="text-xl" />
         <span>Pitch Your Ideas</span>
       </button>
+
+      
+      <button
+        className="absolute bottom-6 left-6 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-full shadow-lg flex items-center space-x-2 transition"
+        onClick={logout} 
+      >
+        <FaSignOutAlt className="text-xl" />
+        <span>Logout</span>
+      </button>
     </div>
   );
 };
 
 export default UserHome;
-
 
 
