@@ -11,6 +11,7 @@ const Home = () => {
   const navigate = useNavigate();
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [pitches, setPitches] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchPitches = async () => {
@@ -24,8 +25,7 @@ const Home = () => {
     fetchPitches();
   }, []);
 
-
-
+  
   const topics = [
             {
               title: "Artificial Intelligence & Machine Learning (AI/ML)",
@@ -164,21 +164,28 @@ const Home = () => {
             },
           ];
 
+  const filteredTopics = topics.filter(
+    (topic) => topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      topic.subtopics.some(sub => sub.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+
+  const filteredPitches = pitches.filter(
+    (pitch) => pitch.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      pitch.problem.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="min-h-screen w-full bg-gradient-to-r from-black to-blue-900 text-white flex flex-col items-center p-10">
-      
-      
       <header className="w-full bg-gray-900 p-4 shadow-lg flex items-center justify-between">
         <div className="flex items-center">
-          <img src="/idRmJUl4Jv.png" alt="PitchIt Logo" className="h-12 w-auto mr-2" />
-          <span className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-blue-700 bg-clip-text text-transparent">
-            PitchIt
-          </span>
+          <span className="text-3xl font-bold text-blue-400">PitchIt</span>
         </div>
         <div className="flex items-center max-w-md w-full">
           <input
             type="text"
             placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <FaSearch className="text-gray-400 ml-2" />
@@ -191,11 +198,10 @@ const Home = () => {
         </button>
       </header>
 
-      
       <section className="w-full max-w-4xl mt-8">
         <h2 className="text-2xl font-bold text-blue-400 mb-4 text-center">Explore Startup Topics</h2>
         <div className="flex flex-wrap justify-center gap-4">
-          {topics.map((topic, index) => (
+          {filteredTopics.map((topic, index) => (
             <div key={index} className="text-center">
               <button
                 className="bg-black hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition"
@@ -215,12 +221,11 @@ const Home = () => {
         </div>
       </section>
 
-      
       <section className="w-full max-w-4xl mt-10">
         <h2 className="text-2xl font-bold text-blue-400 mb-4 text-center">Latest Project Ideas</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {pitches.length > 0 ? (
-            pitches.map((pitch) => (
+          {filteredPitches.length > 0 ? (
+            filteredPitches.map((pitch) => (
               <div key={pitch._id} className="bg-gray-800 p-4 rounded-lg shadow-lg">
                 <h3 className="text-xl font-bold text-blue-300">{pitch.title}</h3>
                 <p className="text-sm text-gray-400 mt-1">Category: {pitch.category}</p>
@@ -232,11 +237,10 @@ const Home = () => {
               </div>
             ))
           ) : (
-            <p className="text-gray-400">No project ideas submitted yet.</p>
+            <p className="text-gray-400">No project ideas found.</p>
           )}
         </div>
       </section>
-      
     </div>
   );
 };
