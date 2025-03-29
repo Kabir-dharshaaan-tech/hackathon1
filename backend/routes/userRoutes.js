@@ -1,20 +1,41 @@
 
 
-
-
 const express = require("express");
 const UserForm = require("../models/UserForm");
+const authMiddleware = require("../middleware/auth"); 
 
 const router = express.Router();
 
 
-router.post("/", async (req, res) => {
+router.post("/", authMiddleware, async (req, res) => {
   const { name, phone, description, github, linkedin, education } = req.body;
 
   try {
-    const newUser = new UserForm({ name, phone, description, github, linkedin, education });
-    await newUser.save();
-    res.status(201).json({ message: "User data saved successfully!", user: newUser });
+    let userForm = await UserForm.findOne({ user: req.user.id });
+
+    if (userForm) {
+      
+      userForm.name = name;
+      userForm.phone = phone;
+      userForm.description = description;
+      userForm.github = github;
+      userForm.linkedin = linkedin;
+      userForm.education = education;
+    } else {
+     
+      userForm = new UserForm({
+        user: req.user.id, 
+        name,
+        phone,
+        description,
+        github,
+        linkedin,
+        education,
+      });
+    }
+
+    await userForm.save();
+    res.status(201).json({ message: "User data saved successfully!", user: userForm });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error, could not save data" });
@@ -22,7 +43,7 @@ router.post("/", async (req, res) => {
 });
 
 
-router.get("/", async (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
   try {
     const users = await UserForm.find();
     res.status(200).json(users);
@@ -33,15 +54,15 @@ router.get("/", async (req, res) => {
 });
 
 
-router.get("/me", async (req, res) => {
+router.get("/me", authMiddleware, async (req, res) => {
   try {
-    const user = await UserForm.findOne(); 
+    const userForm = await UserForm.findOne({ user: req.user.id });
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    if (!userForm) {
+      return res.status(404).json({ message: "User form not found" });
     }
 
-    res.json(user);
+    res.json(userForm);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

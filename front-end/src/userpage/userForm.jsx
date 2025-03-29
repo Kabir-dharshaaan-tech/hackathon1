@@ -2,15 +2,12 @@
 
 
 
-
-
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const UserForm = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -22,15 +19,21 @@ const UserForm = () => {
 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [userExists, setUserExists] = useState(false); 
+  const [userExists, setUserExists] = useState(false);
 
   useEffect(() => {
-    
     const fetchUserData = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
       try {
-        const response = await axios.get("http://localhost:5000/api/users/me");
+        const response = await axios.get("http://localhost:5000/api/users/me", {
+          headers: { Authorization: `Bearer ${token}` }, // Send token
+        });
+
         if (response.data) {
           setUserExists(true);
+          setFormData(response.data); 
         }
       } catch (err) {
         console.log("No existing user data");
@@ -49,8 +52,13 @@ const UserForm = () => {
     setMessage("");
     setLoading(true);
 
+    const token = localStorage.getItem("token");
+
     try {
-      await axios.post("http://localhost:5000/api/users", formData);
+      await axios.post("http://localhost:5000/api/users", formData, {
+        headers: { Authorization: `Bearer ${token}` }, 
+      });
+
       setMessage("User data submitted successfully!");
       setTimeout(() => navigate("/userHome"), 1500);
     } catch (error) {
@@ -71,7 +79,6 @@ const UserForm = () => {
           </p>
         )}
 
-       
         {userExists ? (
           <button
             className="w-full p-2 mt-4 bg-green-600 hover:bg-green-700 rounded-md text-white font-bold transition"
